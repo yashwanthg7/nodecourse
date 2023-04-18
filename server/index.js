@@ -5,8 +5,16 @@ const path = require('path');
 const NOTES_FILE = path.join(__dirname, 'notes.json');
 
 const server = http.createServer((req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   // Parse request URL
   const url = new URL(req.url, `http://${req.headers.host}`);
+  
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    return res.end();
+  }
 
   // Handle GET request for all notes
   if (req.method === 'GET' && url.pathname === '/notes') {
